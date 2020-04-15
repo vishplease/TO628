@@ -1,17 +1,14 @@
+
 #### LOAD PACKAGES (install everything in parentheses first if you don't have it)
 
-pacman::p_load(pacman, tidyverse, knitr, lubridate, ggjoy, spotifyr, DataExplorer, data.table)
+pacman::p_load(pacman, tidyverse, knitr, lubridate, ggjoy, spotifyr, DataExplorer, data.table, dtplyr)
 
 #### AUTHENTICATE SPOTIFY API
 
-
-Sys.setenv(SPOTIFY_CLIENT_ID = Sys.getenv("SPOTIFY_CLIENT_ID"))
-Sys.setenv(SPOTIFY_CLIENT_SECRET = Sys.getenv("SPOTIFY_CLIENT_SECRET"))
-
-
+Sys.setenv(SPOTIFY_CLIENT_ID = '')
+Sys.setenv(SPOTIFY_CLIENT_SECRET = '')
 access_token <- get_spotify_access_token()
 get_spotify_authorization_code()
-
 
 # ACCESS SPOTIFY ACCOUNT
 
@@ -28,91 +25,103 @@ my_plists %>%
 
 # GET DAILY MIX PLAYLIST DETAILS
 
-#Extract Daily Mix Playlists
+#Extract Salsa Playlists
 
 plist.dm1 <- my_plists %>% 
-  filter(name %in% "Daily Mix 1") %>% 
-  tibble()
+  filter(name %in% "Salsa Dominicana") %>% 
+  data.table()
 
 plist.dm2 <- my_plists %>% 
-  filter(name %in% "Daily Mix 2") %>% 
-  tibble()
+  filter(name %in% "Salsa Colombiana") %>% 
+  data.table()
 
 plist.dm3 <- my_plists %>% 
-  filter(name %in% "Daily Mix 3") %>% 
-  tibble()
+  filter(name %in% "Salsa Boricua") %>% 
+  data.table()
 
 plist.dm4 <- my_plists %>% 
-  filter(name %in% "Daily Mix 4") %>% 
-  tibble()
+  filter(name %in% "Salsa Cubana") %>% 
+  data.table()
 
 plist.dm5 <- my_plists %>% 
-  filter(name %in% "Daily Mix 5") %>% 
-  tibble()
+  filter(name %in% "Dame Salsa") %>% 
+  data.table()
 
 plist.dm6 <- my_plists %>% 
-  filter(name %in% "Daily Mix 6") %>% 
-  tibble()
+  filter(name %in% "Salsa Classics") %>% 
+  data.table()
+
+plist.dm7 <- my_plists %>% 
+  filter(name %in% "Salsa Clásica") %>% 
+  data.table()
 
 #Get Playlist Tracks
 
 plist.dm1.tracks <- plist.dm1$id %>% 
   get_playlist_tracks() %>% 
-  tibble()
+  data.table()
 
 
 plist.dm2.tracks <- plist.dm2$id %>% 
   get_playlist_tracks() %>% 
-  tibble() 
+  data.table()
 
 
 plist.dm3.tracks <- plist.dm3$id %>% 
   get_playlist_tracks() %>% 
-  tibble()
-
+  data.table()
 
 plist.dm4.tracks <- plist.dm4$id %>% 
   get_playlist_tracks() %>% 
-  tibble() 
+  data.table()
 
 
 plist.dm5.tracks <- plist.dm5$id %>% 
   get_playlist_tracks() %>% 
-  tibble() 
+  data.table() 
 
 
 plist.dm6.tracks <- plist.dm6$id %>% 
   get_playlist_tracks() %>% 
-  tibble()
+  data.table()
+
+plist.dm7.tracks <- plist.dm7$id %>% 
+  get_playlist_tracks() %>% 
+  data.table()
+
 
 
 # Get Playlist Features
+
+
 plist.dm1.features <- plist.dm1.tracks$track.id %>% 
   get_track_audio_features() %>% 
-  tibble()
+  data.table()
 
 
 plist.dm2.features <- plist.dm2.tracks$track.id %>% 
   get_track_audio_features() %>% 
-  tibble()
+  data.table()
 
 plist.dm3.features <- plist.dm3.tracks$track.id %>% 
   get_track_audio_features() %>% 
-  tibble()
+  data.table()
 
 plist.dm4.features <- plist.dm4.tracks$track.id %>% 
   get_track_audio_features() %>% 
-  tibble()
+  data.table()
 
 plist.dm5.features <- plist.dm5.tracks$track.id %>% 
   get_track_audio_features() %>% 
-  tibble()
+  data.table()
 
 plist.dm6.features <- plist.dm6.tracks$track.id %>% 
   get_track_audio_features() %>% 
-  tibble()
+  data.table()
 
-
+plist.dm7.features <- plist.dm7.tracks$track.id %>% 
+  get_track_audio_features() %>% 
+  data.table()
 
 # Rename A Column In Tracks To Match Features
 
@@ -145,34 +154,42 @@ plist.dm5 <- plist.dm5.tracks %>%
 plist.dm6 <- plist.dm6.tracks %>% 
   left_join(plist.dm6.features, by="uri")
 
-plist.dm1$playlist <- "Daily Mix 1"
-plist.dm2$playlist <- "Daily Mix 2"
-plist.dm3$playlist <- "Daily Mix 3"
-plist.dm4$playlist <- "Daily Mix 4"
-plist.dm5$playlist <- "Daily Mix 5"
-plist.dm6$playlist <- "Daily Mix 6"
+plist.dm7 <- plist.dm7.tracks %>% 
+  left_join(plist.dm7.features, by="uri")
 
+plist.dm1$playlist <- "Salsa Dominicana"
+plist.dm2$playlist <- "Salsa Colombiana"
+plist.dm3$playlist <- "Salsa Boricua"
+plist.dm4$playlist <- "Salsa Cubana"
+plist.dm5$playlist <- "Dame Salsa"
+plist.dm6$playlist <- "Salsa Classics"
+plist.dm7$playlist <- "Salsa Clasica"
 
-# Combine Into Master Daily Mix Playlist
+# Combine Into Master Salsa Data Table
 
-dailymix <- rbind(plist.dm1, 
-                  plist.dm2, 
-                  plist.dm3, 
-                  plist.dm4, 
-                  plist.dm5, 
-                  plist.dm6)
+salsa <- rbind(plist.dm1, 
+               plist.dm2, 
+               plist.dm3, 
+               plist.dm4, 
+               plist.dm5, 
+               plist.dm6)
+
+#Dedupe Data Table
+
+salsa <- salsa %>% 
+  distinct(uri, .keep_all = T)
 
 #extract primary artist name and URI
 
-primary.artist.name <- dailymix$track.artists %>% 
+primary.artist.name <- salsa$track.artists %>% 
   sapply(function(x) x[3]) %>% 
   sapply(function(y) y[1]) %>% 
-  tibble() 
+  data.table() 
 
-primary.artist.uri <- dailymix$track.artists %>% 
+primary.artist.uri <- salsa$track.artists %>% 
   sapply(function(x) x[5]) %>% 
   sapply(function(y) y[1]) %>% 
-  tibble() 
+  data.table() 
 
 names(primary.artist.name)[1] <- "primaryartist_name"
 names(primary.artist.uri)[1] <- "primaryartist_uri"
@@ -180,32 +197,30 @@ names(primary.artist.uri)[1] <- "primaryartist_uri"
 primary.artist.name$primaryartist_name <- as.character(primary.artist.name$primaryartist_name) 
 primary.artist.uri$primaryartist_uri <- as.character(primary.artist.uri$primaryartist_uri)
 
-#add primary artist name and URI to daily mix dataframe
+#add primary artist name and URI to master salsa dataframe
 
-dailymix <- dailymix %>% 
+salsa <- salsa %>% 
   add_column(primary.artist.name) 
 
-dailymix <- dailymix %>% 
+salsa <- salsa %>% 
   add_column(primary.artist.uri) 
-
-
 
 
 #Remove "list" columns from table
 
 
-dailymix$track.album.artists <- NULL
-dailymix$track.album.available_markets <- NULL
-dailymix$track.album.images <- NULL
-dailymix$track.artists <- NULL
-dailymix$track.available_markets <- NULL
-dailymix$added_at <- NULL
+salsa$track.album.artists <- NULL
+salsa$track.album.available_markets <- NULL
+salsa$track.album.images <- NULL
+salsa$track.artists <- NULL
+salsa$track.available_markets <- NULL
+salsa$added_at <- NULL
 
 
 
 #Select Relevant Columns
 
-dailymix <- dailymix %>% 
+salsa <- salsa %>% 
   select(uri, playlist,
          track.name,
          track.album.name,
@@ -229,6 +244,4 @@ dailymix <- dailymix %>%
 
 #EXPORT CSV
 
-spotify_output <- as.data.table(dailymix)
-
-fwrite(spotify_output, file = "output/spotify_dailymix.csv")
+fwrite(salsa, file = "output/spotify_salsa.csv")
