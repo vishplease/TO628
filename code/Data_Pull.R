@@ -17,13 +17,16 @@ my_id <- 'vishplease'
 # GET LIST OF ALL FOLLOWED PLAYLISTS
 
 my_plists <- get_user_playlists(my_id)
+my_plists2 <- get_user_playlists(my_id, offset = 20)
+
+my_plists <- rbind(my_plists, my_plists2)
 
 #REVIEW PLAYLISTS
 
 my_plists %>% 
   select(name) 
 
-# GET DAILY MIX PLAYLIST DETAILS
+# GET PLAYLIST DETAILS
 
 #Extract Salsa Playlists
 
@@ -53,6 +56,36 @@ plist.dm6 <- my_plists %>%
 
 plist.dm7 <- my_plists %>% 
   filter(name %in% "Salsa Clásica") %>% 
+  data.table()
+
+#----Second Wave of Salsa Songs
+
+plist.dm8 <- my_plists %>% 
+  filter(name %in% "Salsa Nation") %>% 
+  data.table()
+
+plist.dm9 <- my_plists %>% 
+  filter(name %in% "Salsa Hits: Los 90s") %>% 
+  data.table()
+
+plist.dm10 <- my_plists %>% 
+  filter(name %in% "Salsa: Los '70") %>% 
+  data.table()
+
+plist.dm11 <- my_plists %>% 
+  filter(name %in% "Salsa: Los '80") %>% 
+  data.table()
+
+plist.dm12 <- my_plists %>% 
+  filter(name %in% "Pura Salsa") %>% 
+  data.table()
+
+plist.dm13 <- my_plists %>% 
+  filter(name %in% "Colombian Salsa Top 100") %>% 
+  data.table()
+
+plist.dm14 <- my_plists %>% 
+  filter(name %in% "Classic Salsa") %>% 
   data.table()
 
 #Get Playlist Tracks
@@ -89,7 +122,35 @@ plist.dm7.tracks <- plist.dm7$id %>%
   get_playlist_tracks() %>% 
   data.table()
 
+#----Second Wave of Salsa Songs
 
+plist.dm8.tracks <- plist.dm8$id %>% 
+  get_playlist_tracks() %>% 
+  data.table()
+
+plist.dm9.tracks <- plist.dm9$id %>% 
+  get_playlist_tracks() %>% 
+  data.table()
+
+plist.dm10.tracks <- plist.dm10$id %>% 
+  get_playlist_tracks() %>% 
+  data.table()
+
+plist.dm11.tracks <- plist.dm11$id %>% 
+  get_playlist_tracks() %>% 
+  data.table()
+
+plist.dm12.tracks <- plist.dm12$id %>% 
+  get_playlist_tracks() %>% 
+  data.table()
+
+plist.dm13.tracks <- plist.dm13$id %>% 
+  get_playlist_tracks() %>% 
+  data.table()
+
+plist.dm14.tracks <- plist.dm14$id %>% 
+  get_playlist_tracks() %>% 
+  data.table()
 
 # Get Playlist Features
 
@@ -123,6 +184,36 @@ plist.dm7.features <- plist.dm7.tracks$track.id %>%
   get_track_audio_features() %>% 
   data.table()
 
+#----Second Wave of Salsa Songs
+
+plist.dm8.features <- plist.dm8.tracks$track.id %>% 
+  get_track_audio_features() %>% 
+  data.table()
+
+plist.dm9.features <- plist.dm9.tracks$track.id %>% 
+  get_track_audio_features() %>% 
+  data.table()
+
+plist.dm10.features <- plist.dm10.tracks$track.id %>% 
+  get_track_audio_features() %>% 
+  data.table()
+
+plist.dm11.features <- plist.dm11.tracks$track.id %>% 
+  get_track_audio_features() %>% 
+  data.table()
+
+plist.dm12.features <- plist.dm12.tracks$track.id %>% 
+  get_track_audio_features() %>% 
+  data.table()
+
+plist.dm13.features <- plist.dm13.tracks$track.id %>% 
+  get_track_audio_features() %>% 
+  data.table()
+
+plist.dm14.features <- plist.dm14.tracks$track.id %>% 
+  get_track_audio_features() %>% 
+  data.table()
+
 # Rename A Column In Tracks To Match Features
 
 names(plist.dm1.tracks)[names(plist.dm1.tracks) == "track.uri"] <- "uri"
@@ -133,7 +224,13 @@ names(plist.dm5.tracks)[names(plist.dm5.tracks) == "track.uri"] <- "uri"
 names(plist.dm6.tracks)[names(plist.dm6.tracks) == "track.uri"] <- "uri"
 names(plist.dm7.tracks)[names(plist.dm7.tracks) == "track.uri"] <- "uri"
 
-
+names(plist.dm8.tracks)[names(plist.dm8.tracks) == "track.uri"] <- "uri"
+names(plist.dm9.tracks)[names(plist.dm9.tracks) == "track.uri"] <- "uri"
+names(plist.dm10.tracks)[names(plist.dm10.tracks) == "track.uri"] <- "uri"
+names(plist.dm11.tracks)[names(plist.dm11.tracks) == "track.uri"] <- "uri"
+names(plist.dm12.tracks)[names(plist.dm12.tracks) == "track.uri"] <- "uri"
+names(plist.dm13.tracks)[names(plist.dm13.tracks) == "track.uri"] <- "uri"
+names(plist.dm14.tracks)[names(plist.dm14.tracks) == "track.uri"] <- "uri"
 
 # Join On "uri"
 
@@ -158,6 +255,27 @@ plist.dm6 <- plist.dm6.tracks %>%
 plist.dm7 <- plist.dm7.tracks %>% 
   left_join(plist.dm7.features, by="uri")
 
+plist.dm8 <- plist.dm8.tracks %>% 
+  left_join(plist.dm8.features, by="uri")
+
+plist.dm9 <- plist.dm9.tracks %>% 
+  left_join(plist.dm9.features, by="uri")
+
+plist.dm10 <- plist.dm10.tracks %>% 
+  left_join(plist.dm10.features, by="uri")
+
+plist.dm11 <- plist.dm11.tracks %>% 
+  left_join(plist.dm11.features, by="uri")
+
+plist.dm12 <- plist.dm12.tracks %>% 
+  left_join(plist.dm12.features, by="uri")
+
+plist.dm13 <- plist.dm13.tracks %>% 
+  left_join(plist.dm13.features, by="uri")
+
+plist.dm14 <- plist.dm14.tracks %>% 
+  left_join(plist.dm14.features, by="uri")
+
 plist.dm1$playlist <- "Salsa Dominicana"
 plist.dm2$playlist <- "Salsa Colombiana"
 plist.dm3$playlist <- "Salsa Boricua"
@@ -165,6 +283,14 @@ plist.dm4$playlist <- "Salsa Cubana"
 plist.dm5$playlist <- "Dame Salsa"
 plist.dm6$playlist <- "Salsa Classics"
 plist.dm7$playlist <- "Salsa Clasica"
+
+plist.dm8$playlist <- "Salsa Nation"
+plist.dm9$playlist <- "Salsa Hits: Los 90s"
+plist.dm10$playlist <- "Salsa: Los '70"
+plist.dm11$playlist <- "Salsa: Los '80"
+plist.dm12$playlist <- "Pura Salsa"
+plist.dm13$playlist <- "Colombian Salsa Top 100"
+plist.dm14$playlist <- "Classic Salsa"
 
 # Combine Into Master Salsa Data Table
 
@@ -174,7 +300,14 @@ salsa <- rbind(plist.dm1,
                plist.dm4, 
                plist.dm5, 
                plist.dm6,
-               plist.dm7)
+               plist.dm7,
+               plist.dm8,
+               plist.dm9,
+               plist.dm10,
+               plist.dm11,
+               plist.dm12,
+               plist.dm13,
+               plist.dm14)
 
 #Dedupe Data Table
 
@@ -207,6 +340,10 @@ salsa <- salsa %>%
 salsa <- salsa %>% 
   add_column(primary.artist.uri) 
 
+#hardcode genre 
+
+salsa$genre <- "salsa"
+
 
 #Remove "list" columns from table
 
@@ -223,7 +360,7 @@ salsa$added_at <- NULL
 #Select Relevant Columns
 
 salsa <- salsa %>% 
-  select(uri, playlist,
+  select(uri, playlist, genre,
          track.name,
          track.album.name,
          track.album.release_date,
