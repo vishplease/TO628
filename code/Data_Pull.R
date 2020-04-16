@@ -131,6 +131,7 @@ names(plist.dm3.tracks)[names(plist.dm3.tracks) == "track.uri"] <- "uri"
 names(plist.dm4.tracks)[names(plist.dm4.tracks) == "track.uri"] <- "uri"
 names(plist.dm5.tracks)[names(plist.dm5.tracks) == "track.uri"] <- "uri"
 names(plist.dm6.tracks)[names(plist.dm6.tracks) == "track.uri"] <- "uri"
+names(plist.dm7.tracks)[names(plist.dm7.tracks) == "track.uri"] <- "uri"
 
 
 
