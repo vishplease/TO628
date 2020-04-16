@@ -172,7 +172,8 @@ salsa <- rbind(plist.dm1,
                plist.dm3, 
                plist.dm4, 
                plist.dm5, 
-               plist.dm6)
+               plist.dm6,
+               plist.dm7)
 
 #Dedupe Data Table
 
